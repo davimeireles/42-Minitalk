@@ -6,7 +6,7 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 20:14:19 by dmeirele          #+#    #+#             */
-/*   Updated: 2023/11/30 19:09:25 by dmeirele         ###   ########.fr       */
+/*   Updated: 2023/12/04 18:21:46 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ size_t				ft_strlcat(char *dst, const char *src, size_t size);
 
 typedef struct s_list
 {
-    void			*content;
-    struct s_list	*next;
+	void			*content;
+	struct s_list	*next;
 }					t_list;
 
 t_list				*ft_lstnew(void *content);
@@ -80,27 +80,23 @@ void				ft_lstadd_back(t_list **lst, t_list *new);
 void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 void				ft_lstdelone(t_list *lst, void (*del)(void *));
-
 int					ft_lstsize(t_list *lst);
 
 // get_next_line functions
-char	*get_next_line(int fd);
-char	*ft_read_from_file(char *s_buffer, int fd);
-char	*ft_strjoin_gnl(char *str1, char *str2);
-char	*ft_extract_line(char *s_buffer);
-char	*ft_strcpy_nl(char *src, char *dest, int nl_stop);
-char	*ft_update_data(char *s_buffer);
-
-int		ft_check_character(char *str, int c);
+char				*get_next_line(int fd);
+char				*ft_read_from_file(char *s_buffer, int fd);
+char				*ft_strjoin_gnl(char *str1, char *str2);
+char				*ft_extract_line(char *s_buffer);
+char				*ft_strcpy_nl(char *src, char *dest, int nl_stop);
+char				*ft_update_data(char *s_buffer);
+int					ft_check_character(char *str, int c);
 
 // ft_printf functions
-
-int		ft_printf(const char *format, ...);
-
-void	ft_print_char(va_list args, int *print);
-void	ft_print_str(va_list args, int *print);
-void	ft_print_nbr(va_list args, int *print, char format);
-void	ft_print_hex(va_list args, int *print, char format);
-void	ft_put_char(char c, int *print);
+int					ft_printf(const char *format, ...);
+void				ft_print_char(va_list args, int *print);
+void				ft_print_str(va_list args, int *print);
+void				ft_print_nbr(va_list args, int *print, char format);
+void				ft_print_hex(va_list args, int *print, char format);
+void				ft_put_char(char c, int *print);
 
 #endif

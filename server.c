@@ -6,21 +6,20 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 18:48:02 by dmeirele          #+#    #+#             */
-/*   Updated: 2023/12/04 16:52:21 by dmeirele         ###   ########.fr       */
+/*   Updated: 2023/12/04 18:16:23 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void print_byte(int *bits)
+void	print_byte(int *bits)
 {
-	int i;
-	unsigned char c;
+	int				i;
+	unsigned char	c;
 
 	i = 7;
 	c = 0;
-
-	while(i >= 0)
+	while (i >= 0)
 	{
 		c = c * 2 + bits[i];
 		i--;
@@ -28,12 +27,12 @@ void print_byte(int *bits)
 	ft_printf("%c", c);
 }
 
-void signal_handler(int signal)
+void	signal_handler(int signal)
 {
-	static int byte[8];
-	static int bits = 0;
-	
-	if(signal == SIGUSR1)
+	static int	byte[8];
+	static int	bits = 0;
+
+	if (signal == SIGUSR1)
 	{
 		byte[bits] = 0;
 		bits++;
@@ -45,25 +44,23 @@ void signal_handler(int signal)
 	}
 	else
 		exit(1);
-
-	if(bits == 8)
+	if (bits == 8)
 	{
 		print_byte(byte);
 		bits = 0;
 	}
 }
 
-int main()
+int	main(void)
 {
-	pid_t pid;
+	pid_t	pid;
 
 	pid = getpid();
-	ft_printf("Server is running. PID:%d\n",pid);
-
-	while(1)
+	ft_printf("PID to connect to server: %d\n", pid);
+	while (1)
 	{
 		signal(SIGUSR1, signal_handler);
 		signal(SIGUSR2, signal_handler);
 	}
-	return 0;
+	return (0);
 }

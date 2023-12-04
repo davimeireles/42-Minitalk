@@ -6,15 +6,15 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 19:00:19 by dmeirele          #+#    #+#             */
-/*   Updated: 2023/12/04 17:08:26 by dmeirele         ###   ########.fr       */
+/*   Updated: 2023/12/04 18:12:17 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void comunic_server(int c, pid_t pid)
+void	comunic_server(int c, pid_t pid)
 {
-	int bits;
+	int	bits;
 
 	bits = 0;
 	while (bits < 8)
@@ -29,29 +29,29 @@ void comunic_server(int c, pid_t pid)
 	}
 }
 
-void send_bits(pid_t pid, char *str)
+void	send_bits(pid_t pid, char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
 	{
-		comunic_server((unsigned char)str[i],pid);
+		comunic_server((unsigned char)str[i], pid);
 		i++;
 	}
 }
 
-int main(int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
-	pid_t pid;
-	
-	if(argc != 3)
+	pid_t	pid;
+
+	if (argc != 3)
 	{
 		ft_printf("You need to put [PID]&[MSG]\n");
-		return 0;
+		return (0);
 	}
 	pid = ft_atoi(argv[1]);
-	if(pid == -1)
-		return 1;
-	send_bits(pid,argv[2]);
+	if (pid == -1)
+		return (1);
+	send_bits(pid, argv[2]);
 }
