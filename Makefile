@@ -12,13 +12,14 @@ CLIENT_OBJS = $(CLIENT_SRCS:.c=.o)
 
 # Variáveis de texo
 GREEN = \033[92m
+RESET	= \033[0m
 
 all: $(NAME)
-	@echo "$(GREEN)[SUCCESS]Compilation successful."
 
 $(NAME): $(LIBFT) $(SERVER_OBJS) $(CLIENT_OBJS)
 	$(CC) $(FLAGS) -o $(SERVER) $(SERVER_OBJS) $(LIBFT)
 	$(CC) $(FLAGS) -o $(CLIENT) $(CLIENT_OBJS) $(LIBFT)
+	@echo "[$(GREEN)SUCCESS$(RESET)]Compilation successful."
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
@@ -29,11 +30,15 @@ $(LIBFT):
 clean:
 	rm -rf $(SERVER_OBJS) $(CLIENT_OBJS)
 	$(MAKE) -C $(LIBFT_DIR) clean
-	@echo "$(GREEN)**[SUCCESS]Objects removed.**"
+	@echo "[$(GREEN)SUCCESS$(RESET)]Objects removed."
 
 fclean: clean
 	rm -rf $(CLIENT) $(SERVER)
 	rm -rf $(LIBFT)
-	@echo "$(GREEN)**[SUCCESS]Static Library removed.**"
+	@echo "[$(GREEN)SUCCESS$(RESET)]Static Library and Executables removed."
 
 re: fclean all
+
+.SILENT:
+
+.PHONY: all clean fclean re
