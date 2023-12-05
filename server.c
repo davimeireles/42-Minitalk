@@ -6,13 +6,11 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 18:48:02 by dmeirele          #+#    #+#             */
-/*   Updated: 2023/12/05 16:45:45 by dmeirele         ###   ########.fr       */
+/*   Updated: 2023/12/05 17:13:49 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-
-char *string;
 
 void	print_byte(int *bits)
 {
@@ -21,7 +19,6 @@ void	print_byte(int *bits)
 
 	i = 7;
 	c = 0;
-	j = 0;
 	while (i >= 0)
 	{
 		c = c * 2 + bits[i];
