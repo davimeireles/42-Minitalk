@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/30 18:48:02 by dmeirele          #+#    #+#             */
-/*   Updated: 2023/12/05 16:45:45 by dmeirele         ###   ########.fr       */
+/*   Created: 2023/12/05 12:41:34 by dmeirele          #+#    #+#             */
+/*   Updated: 2023/12/05 16:00:22 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
-
-char *string;
+#include "minitalkbonus.h"
 
 void	print_byte(int *bits)
 {
@@ -21,7 +19,6 @@ void	print_byte(int *bits)
 
 	i = 7;
 	c = 0;
-	j = 0;
 	while (i >= 0)
 	{
 		c = c * 2 + bits[i];
@@ -56,14 +53,10 @@ void	signal_handler(int signal)
 
 int	main(void)
 {
-	pid_t	pid;
-
-	pid = getpid();
-	ft_printf("PID to connect to server: %d\n", pid);
-	while (1)
-	{
-		signal(SIGUSR1, signal_handler);
-		signal(SIGUSR2, signal_handler);
-	}
-	return (0);
+	print_pid(1);
+	signal(SIGUSR1,signal_handler);
+	signal(SIGUSR2,signal_handler);
+	while(1)
+		pause();
+	return (EXIT_SUCCESS);
 }
