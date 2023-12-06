@@ -24,7 +24,7 @@ void	print_byte(int *bits)
 		c = c * 2 + bits[i];
 		i--;
 	}
-	ft_printf("%c", c);
+	write(1, &c, 1);
 }
 
 void	signal_handler(int signal)

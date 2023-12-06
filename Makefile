@@ -5,16 +5,16 @@ FLAGS = -Wall -Wextra -Werror
 LIBFT = libft/libft.a
 LIBFT_DIR = libft/
 SERVER = server
-SERVER_SRCS = server.c
+SERVER_SRCS = server.c utils.c
 SERVER_OBJS = $(SERVER_SRCS:.c=.o)
 SERVER_BONUS = server_bonus
-SERVER_SRCS_BONUS = server_bonus.c utils_bonus.c
+SERVER_SRCS_BONUS = server_bonus.c
 SERVER_OBJS_BONUS = $(SERVER_SRCS_BONUS:.c=.o)
 CLIENT = client
-CLIENT_SRCS = client.c
+CLIENT_SRCS = client.c utils.c
 CLIENT_OBJS = $(CLIENT_SRCS:.c=.o)
 CLIENT_BONUS = client_bonus
-CLIENT_SRCS_BONUS = client_bonus.c utils_bonus.c
+CLIENT_SRCS_BONUS = client_bonus.c
 CLIENT_OBJS_BONUS = $(CLIENT_SRCS_BONUS:.c=.o)
 
 # Variáveis de texo

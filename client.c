@@ -12,31 +12,39 @@
 
 #include "minitalk.h"
 
-void	comunic_server(int c, pid_t pid)
+void	send_bit_to_server(unsigned char c, pid_t pid)
 {
 	int	bits;
 
 	bits = 0;
 	while (bits < 8)
 	{
-		if (c % 2 == 0)
-			kill(pid, SIGUSR1);
+		if (c & 0b00000001)
+        {
+            if(kill(pid,SIGUSR1) == -1)
+                ft_printf("bit not transmited to server\n");
+        }
 		else
-			kill(pid, SIGUSR2);
-		c = c / 2;
+        {
+            if(kill(pid, SIGUSR2 == -1))
+                ft_printf("bit not transmited to server\n");
+        }
+        c = c >> 1;
 		bits++;
-		usleep(1000);
+		usleep(100);
 	}
 }
 
 void	send_bits(pid_t pid, char *str)
 {
-	int	i;
+	size_t  i;
+    size_t  len;
 
 	i = 0;
-	while (str[i])
+	len = ft_strlen(str);
+    while (i <= len)
 	{
-		comunic_server((unsigned char)str[i], pid);
+		send_bit_to_server(str[i], pid);
 		i++;
 	}
 }
@@ -45,13 +53,13 @@ int	main(int argc, char *argv[])
 {
 	pid_t	pid;
 
-	if (argc != 3)
-	{
-		ft_printf("You need to put [PID]&[MSG]\n");
-		return (0);
-	}
+	if (argc != 3) {
+        ft_printf("You need to put [PID]&[MSG]\n");
+        return (0);
+    }
 	pid = ft_atoi(argv[1]);
 	if (pid == -1)
 		return (1);
 	send_bits(pid, argv[2]);
+    return 0;
 }

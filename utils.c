@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalkbonus.h"
+#include "minitalk.h"
 
 void	print_pid(int op)
 {
@@ -22,4 +22,31 @@ void	print_pid(int op)
 	else
 		ft_printf("Client PID: ");
 	ft_printf("%d\n",pid);
+}
+
+unsigned char *ft_str_join(unsigned char *str1, unsigned char *str2)
+{
+    size_t  i;
+    size_t  size;
+    unsigned char *ret_string;
+
+    i = 0;
+    size = 0;
+    if (str1)
+        size = ft_strlen((char *)str1);
+    size = size + ft_strlen((char *)str2) + 1;
+    ret_string = malloc(sizeof(char *) * size);
+    if (!ret_string)
+        return (NULL);
+    if (str1) {
+        while (str1[i])
+            *(ret_string++) = str1[i++];
+        ret_string = ret_string - ft_strlen((char *) str1);
+    }
+    while (*str2)
+        ret_string[i++] = *(str2++);
+    ret_string[i] = '\0';
+    if (str1)
+        free(str1);
+    return ret_string;
 }

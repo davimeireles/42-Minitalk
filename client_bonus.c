@@ -32,7 +32,7 @@ void	comunic_server(int c, pid_t pid)
 			kill(pid, SIGUSR2);
 		c = c / 2;
 		bits++;
-		usleep(1000);
+		usleep(50);
 	}
 }
 

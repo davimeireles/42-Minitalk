@@ -12,55 +12,55 @@
 
 #include "minitalk.h"
 
-void	print_byte(int *bits)
-{
-	int				i;
-	unsigned char	c;
-
-	i = 7;
-	c = 0;
-	while (i >= 0)
-	{
-		c = c * 2 + bits[i];
-		i--;
-	}
-	ft_printf("%c", c);
-}
+unsigned char *global_string = NULL;
 
 void	signal_handler(int signal)
 {
-	static int	byte[8];
-	static int	bits = 0;
+    static int	count;
+    static unsigned char c;
+    unsigned char   bit;
 
-	if (signal == SIGUSR1)
-	{
-		byte[bits] = 0;
-		bits++;
-	}
-	else if (signal == SIGUSR2)
-	{
-		byte[bits] = 1;
-		bits++;
-	}
-	else
-		exit(1);
-	if (bits == 8)
-	{
-		print_byte(byte);
-		bits = 0;
-	}
+    count = 0;
+    c = 0;
+    bit = (signal == SIGUSR1);
+    c = c | (bit << count++);
+    if (count == 8) // ja tenho os 8 bits que compoe o byte do caractere em questao
+    {
+        global_string = ft_str_join(global_string,&c);
+        if (!global_string)
+            exit (EXIT_FAILURE);
+        if(c == '\0')
+        {
+            ft_printf("%s",global_string);
+            free(global_string);
+            global_string = NULL;
+        }
+        count = 0;
+        c = 0;
+    }
+}
+
+void define_handler(void)
+{
+    struct sigaction    act1;
+    struct sigaction    act2;
+
+    act1.sa_handler = &signal_handler;
+    act2.sa_handler = &signal_handler;
+    sigemptyset(&act1.sa_mask);
+    sigaddset(&act1.sa_mask, SIGUSR2);
+    sigemptyset(&act2.sa_mask);
+    sigaddset(&act2.sa_mask , SIGUSR1);
+    if (sigaction(SIGUSR1,  &act1, NULL) == -1)
+        ft_printf("failed handler\n");
+    if(sigaction(SIGUSR2, &act2, NULL) == -1)
+        ft_printf("failed handler\n");
 }
 
 int	main(void)
 {
-	pid_t	pid;
-
-	pid = getpid();
-	ft_printf("PID to connect to server: %d\n", pid);
-	while (1)
-	{
-		signal(SIGUSR1, signal_handler);
-		signal(SIGUSR2, signal_handler);
-	}
-	return (0);
+    print_pid(1);
+    define_handler();
+    while(1)
+        pause();
 }

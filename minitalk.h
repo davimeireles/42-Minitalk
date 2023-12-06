@@ -17,8 +17,12 @@
 # include <sys/types.h>
 # include "libft/libft.h"
 
-void	print_byte(int *bits);
+void    define_handler(void);
 void	signal_handler(int signal);
-void	comunic_server(int c, pid_t pid);
+unsigned char   *ft_str_join(unsigned char *str1, unsigned char *str2);
 void	send_bits(pid_t pid, char *str);
+void	send_bit_to_server(unsigned char c, pid_t pid);
+void	print_pid(int op);
+
+
 #endif
