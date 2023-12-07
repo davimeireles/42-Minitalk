@@ -52,6 +52,7 @@ int	main(void)
 {
     struct sigaction act;
     act.sa_sigaction = &signal_handler;
+    sigemptyset(&act.sa_mask);
     act.sa_flags = SA_SIGINFO;
     print_pid(1);
     if (sigaction(SIGUSR1,  &act, NULL) == -1)
