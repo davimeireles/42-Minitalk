@@ -6,57 +6,64 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:41:34 by dmeirele          #+#    #+#             */
-/*   Updated: 2023/12/05 16:00:22 by dmeirele         ###   ########.fr       */
+/*   Updated: 2023/12/07 23:20:35 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalkbonus.h"
 
-void	print_byte(int *bits)
+void	fill_global_string(int *byte, siginfo_t *info)
 {
-	int				i;
-	unsigned char	c;
+	int						i;
+	unsigned char			character;
+	static unsigned char	*global_string = NULL;
 
 	i = 7;
-	c = 0;
+	character = 0;
 	while (i >= 0)
+		character = character * 2 + byte[i--];
+	if (character == '\0')
 	{
-		c = c * 2 + bits[i];
-		i--;
+		ft_printf("%s", global_string);
+		free(global_string);
+		global_string = NULL;
+		kill(info->si_pid, SIGUSR1);
 	}
-	write(1, &c, 1);
+	else
+		global_string = ft_str_join(global_string, character);
 }
 
-void	signal_handler(int signal)
+void	signal_handler(int signal, siginfo_t *info, void *context)
 {
 	static int	byte[8];
 	static int	bits = 0;
 
+	(void)context;
 	if (signal == SIGUSR1)
-	{
-		byte[bits] = 0;
-		bits++;
-	}
-	else if (signal == SIGUSR2)
-	{
-		byte[bits] = 1;
-		bits++;
-	}
+		byte[bits++] = 0;
 	else
-		exit(1);
+		byte[bits++] = 1;
 	if (bits == 8)
 	{
-		print_byte(byte);
+		fill_global_string(byte, info);
 		bits = 0;
 	}
 }
 
 int	main(void)
 {
+	struct sigaction	act;
+
+	act.sa_sigaction = &signal_handler;
+	sigemptyset(&act.sa_mask);
+	act.sa_flags = SA_SIGINFO;
 	print_pid(1);
-	signal(SIGUSR1,signal_handler);
-	signal(SIGUSR2,signal_handler);
-	while(1)
+	if (sigaction(SIGUSR1, &act, NULL) == -1)
+		ft_printf("failed handler\n");
+	if (sigaction(SIGUSR2, &act, NULL) == -1)
+		ft_printf("failed handler\n");
+	while (1)
+	{
 		pause();
-	return (EXIT_SUCCESS);
+	}
 }
