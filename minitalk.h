@@ -15,14 +15,15 @@
 
 # include <signal.h>
 # include <sys/types.h>
+# include <stdlib.h>
 # include "libft/libft.h"
 
-void    define_handler(void);
-void	signal_handler(int signal);
-unsigned char   *ft_str_join(unsigned char *str1, unsigned char *str2);
-void	send_bits(pid_t pid, char *str);
-void	send_bit_to_server(unsigned char c, pid_t pid);
+void    send_byte(pid_t PID, char *string);
+void	send_bits_to_server(int c, pid_t PID);
+void	signal_handler(int signal, siginfo_t *info, void *context);
+void    fill_global_string(int *byte);
 void	print_pid(int op);
+unsigned char *ft_str_join(unsigned char *global_string, unsigned char character);
 
 
 #endif

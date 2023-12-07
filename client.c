@@ -12,41 +12,30 @@
 
 #include "minitalk.h"
 
-void	send_bit_to_server(unsigned char c, pid_t pid)
+void	send_bits_to_server(int c, pid_t PID)
 {
-	int	bits;
+    int bits = 0;
 
-	bits = 0;
-	while (bits < 8)
-	{
-		if (c & 0b00000001)
-        {
-            if(kill(pid,SIGUSR1) == -1)
-                ft_printf("bit not transmited to server\n");
-        }
-		else
-        {
-            if(kill(pid, SIGUSR2 == -1))
-                ft_printf("bit not transmited to server\n");
-        }
-        c = c >> 1;
-		bits++;
-		usleep(100);
-	}
+    while(bits < 8)
+    {
+        if(c % 2 == 0)
+            kill(PID, SIGUSR1);
+        else
+            kill(PID, SIGUSR2);
+        c /= 2;
+        bits++;
+        usleep(150);
+    }
 }
 
-void	send_bits(pid_t pid, char *str)
+void send_byte(pid_t PID, char *string)
 {
-	size_t  i;
-    size_t  len;
+    int i = 0;
+    int str_len_null_included;
 
-	i = 0;
-	len = ft_strlen(str);
-    while (i <= len)
-	{
-		send_bit_to_server(str[i], pid);
-		i++;
-	}
+    str_len_null_included = ft_strlen(string);
+    while(i <= str_len_null_included)
+        send_bits_to_server(string[i++], PID);
 }
 
 int	main(int argc, char *argv[])
@@ -60,6 +49,6 @@ int	main(int argc, char *argv[])
 	pid = ft_atoi(argv[1]);
 	if (pid == -1)
 		return (1);
-	send_bits(pid, argv[2]);
+	send_byte(pid, argv[2]);
     return 0;
 }

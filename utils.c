@@ -24,29 +24,30 @@ void	print_pid(int op)
 	ft_printf("%d\n",pid);
 }
 
-unsigned char *ft_str_join(unsigned char *str1, unsigned char *str2)
+unsigned char *ft_str_join(unsigned char *global_string, unsigned char character)
 {
     size_t  i;
     size_t  size;
-    unsigned char *ret_string;
+    size_t j = 0;
+    unsigned char *helper_string;
 
     i = 0;
     size = 0;
-    if (str1)
-        size = ft_strlen((char *)str1);
-    size = size + ft_strlen((char *)str2) + 1;
-    ret_string = malloc(sizeof(char *) * size);
-    if (!ret_string)
+    if (global_string)
+        size = ft_strlen((char *)global_string);
+    size = size + 1;
+    helper_string = malloc(sizeof(char *) * size + 1);
+    if (!helper_string)
         return (NULL);
-    if (str1) {
-        while (str1[i])
-            *(ret_string++) = str1[i++];
-        ret_string = ret_string - ft_strlen((char *) str1);
+    while(helper_string[j])
+        j++;
+    if (global_string)
+    {
+        while (global_string[i])
+            helper_string[j++] = global_string[i++];
     }
-    while (*str2)
-        ret_string[i++] = *(str2++);
-    ret_string[i] = '\0';
-    if (str1)
-        free(str1);
-    return ret_string;
+    helper_string[j] = character;
+    j++;
+    helper_string[j] = '\0';
+    return helper_string;
 }

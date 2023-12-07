@@ -12,55 +12,54 @@
 
 #include "minitalk.h"
 
-unsigned char *global_string = NULL;
-
-void	signal_handler(int signal)
+void fill_global_string(int *byte)
 {
-    static int	count;
-    static unsigned char c;
-    unsigned char   bit;
+    int i = 7;
+    unsigned char character = 0;
+    static unsigned char *global_string = NULL;
 
-    count = 0;
-    c = 0;
-    bit = (signal == SIGUSR1);
-    c = c | (bit << count++);
-    if (count == 8) // ja tenho os 8 bits que compoe o byte do caractere em questao
+    while(i >= 0)
+        character = character * 2 + byte[i--];
+    if(character == '\0')
     {
-        global_string = ft_str_join(global_string,&c);
-        if (!global_string)
-            exit (EXIT_FAILURE);
-        if(c == '\0')
-        {
-            ft_printf("%s",global_string);
-            free(global_string);
-            global_string = NULL;
-        }
-        count = 0;
-        c = 0;
+        ft_printf("%s", global_string);
+        free(global_string);
     }
+    else
+        global_string = ft_str_join(global_string, character);
 }
 
-void define_handler(void)
+void	signal_handler(int signal, siginfo_t *info, void *context)
 {
-    struct sigaction    act1;
-    struct sigaction    act2;
+    (void)info;
+    (void)context;
 
-    act1.sa_handler = &signal_handler;
-    act2.sa_handler = &signal_handler;
-    sigemptyset(&act1.sa_mask);
-    sigaddset(&act1.sa_mask, SIGUSR2);
-    sigemptyset(&act2.sa_mask);
-    sigaddset(&act2.sa_mask , SIGUSR1);
-    if (sigaction(SIGUSR1,  &act1, NULL) == -1)
-        ft_printf("failed handler\n");
-    if(sigaction(SIGUSR2, &act2, NULL) == -1)
-        ft_printf("failed handler\n");
+    static int byte[8];
+    static int bits = 0;
+
+    if (signal == SIGUSR1)
+        byte[bits++] = 0;
+    else
+        byte[bits++] = 1;
+    if(bits == 8)
+    {
+        fill_global_string(byte);
+        bits = 0;
+    }
 }
 
 int	main(void)
 {
+    struct sigaction act;
+    act.sa_sigaction = &signal_handler;
+    act.sa_flags = SA_SIGINFO;
     print_pid(1);
-    define_handler();
+    if (sigaction(SIGUSR1,  &act, NULL) == -1)
+        ft_printf("failed handler\n");
+    if(sigaction(SIGUSR2, &act, NULL) == -1)
+        ft_printf("failed handler\n");
     while(1)
+    {
         pause();
+    }
 }
